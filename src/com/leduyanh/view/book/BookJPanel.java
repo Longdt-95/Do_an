@@ -5,11 +5,15 @@
  */
 package com.leduyanh.view.book;
 
+import com.leduyanh.controller.ExportFileExcel;
 import com.leduyanh.view.book.AddBookJFrame;
 import com.leduyanh.model.Book;
 import com.leduyanh.service.BookService;
 import com.leduyanh.service.CategoryService;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -22,7 +26,7 @@ public class BookJPanel extends javax.swing.JPanel {
     BookService bookService;
     DefaultTableModel defaultTableModel;
     CategoryService categoryService;
-    
+    ExportFileExcel exportFileExel;
     public BookJPanel() {
         initComponents();
         bookService = new BookService();
@@ -60,11 +64,14 @@ public class BookJPanel extends javax.swing.JPanel {
         typeSearchJCombobox = new javax.swing.JComboBox<>();
         searchJTextField = new javax.swing.JTextField();
         searchButton = new javax.swing.JButton();
+        exportFileButtom = new javax.swing.JButton();
+        exportFileTextField = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         updateBookButton = new javax.swing.JButton();
         refeshButton = new javax.swing.JButton();
         addBookbutton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
+        statiButton = new javax.swing.JButton();
 
         bookTable.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         bookTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -93,6 +100,18 @@ public class BookJPanel extends javax.swing.JPanel {
             }
         });
 
+        exportFileButtom.setBackground(new java.awt.Color(102, 102, 0));
+        exportFileButtom.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        exportFileButtom.setForeground(new java.awt.Color(255, 255, 255));
+        exportFileButtom.setText("Xuất file");
+        exportFileButtom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportFileButtomActionPerformed(evt);
+            }
+        });
+
+        exportFileTextField.setText("Tên file");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -100,14 +119,20 @@ public class BookJPanel extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(typeSearchJCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(searchJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(typeSearchJCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(searchJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(exportFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(exportFileButtom)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -122,7 +147,12 @@ public class BookJPanel extends javax.swing.JPanel {
                             .addComponent(typeSearchJCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 592, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(exportFileButtom, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                    .addComponent(exportFileTextField))
+                .addContainerGap())
         );
 
         updateBookButton.setBackground(new java.awt.Color(0, 153, 0));
@@ -165,19 +195,29 @@ public class BookJPanel extends javax.swing.JPanel {
             }
         });
 
+        statiButton.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        statiButton.setText("Thống Kê");
+        statiButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                statiButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(144, 144, 144)
+                .addContainerGap()
+                .addComponent(statiButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(refeshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(deleteButton)
                 .addGap(18, 18, 18)
                 .addComponent(updateBookButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(addBookbutton, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                .addComponent(addBookbutton, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -188,7 +228,8 @@ public class BookJPanel extends javax.swing.JPanel {
                     .addComponent(addBookbutton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(refeshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(updateBookButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(statiButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 13, Short.MAX_VALUE))
         );
 
@@ -274,22 +315,51 @@ public class BookJPanel extends javax.swing.JPanel {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         int row = bookTable.getSelectedRow();
 
+            
+        int confirm  = JOptionPane.showConfirmDialog(BookJPanel.this, "Bạn có chắc chắn muốn xóa không?");
+        
+        if(confirm == JOptionPane.YES_OPTION){
             int bookId = Integer.valueOf(String.valueOf(bookTable.getValueAt(row, 0)));
             bookService.deleteBook(bookId);
-        
+            JOptionPane.showMessageDialog(null, "Đã xóa sách!");
+        }
     }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void exportFileButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportFileButtomActionPerformed
+        exportFileExel = new ExportFileExcel();
+        StringBuffer path = new StringBuffer();
+        path.append("C:\\Users\\Admin\\Desktop\\");
+        path.append(exportFileTextField.getText());
+        path.append(".xlsx");
+        String path2 = path.toString();
+        
+        try {
+            exportFileExel.writeToExcell(bookTable,path2);
+            JOptionPane.showMessageDialog(null, "Lưu file thành công!");
+        } catch (IOException ex) {
+            Logger.getLogger(BookJPanel.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Lưu file không thành công!");
+        }       
+    }//GEN-LAST:event_exportFileButtomActionPerformed
+
+    private void statiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statiButtonActionPerformed
+        new StatisticalJFrame().setVisible(true);
+    }//GEN-LAST:event_statiButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBookbutton;
     private javax.swing.JTable bookTable;
     private javax.swing.JButton deleteButton;
+    private javax.swing.JButton exportFileButtom;
+    private javax.swing.JTextField exportFileTextField;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton refeshButton;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchJTextField;
+    private javax.swing.JButton statiButton;
     private javax.swing.JComboBox<String> typeSearchJCombobox;
     private javax.swing.JButton updateBookButton;
     // End of variables declaration//GEN-END:variables

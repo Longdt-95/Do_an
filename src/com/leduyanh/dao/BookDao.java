@@ -18,7 +18,7 @@ public class BookDao {
         
         Connection connection = JDBCConnection.getJDBCConnection();
         
-        String sql = "SELECT * FROM dbo.Book";    
+        String sql = "SELECT * FROM dbo.Book ORDER BY book_id desc";    
        
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);

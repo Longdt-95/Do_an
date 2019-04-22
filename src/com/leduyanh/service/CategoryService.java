@@ -24,4 +24,12 @@ public class CategoryService {
     public String getCategoryById(int category_id){
         return catetgoryDao.getCategoryById(category_id);
     }
+    
+    public int getCountBookByCategory(int category_id){
+        return catetgoryDao.getCountBookByCategory(category_id);
+    }
+    
+    public int getCountBookByCategoryTotal(int category_id){
+        return catetgoryDao.getCountBookByCategoryTotal(category_id);
+    }
 }

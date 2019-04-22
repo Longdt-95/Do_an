@@ -79,4 +79,49 @@ public class CategoryDao {
         }
         return null;
     }
+    
+     public int getCountBookByCategory(int category_id){
+         
+        Connection connection = JDBCConnection.getJDBCConnection();
+        
+        String sql = "SELECT * FROM dbo.Book WHERE category_id = ?";    
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, category_id);
+            ResultSet rs = preparedStatement.executeQuery();
+            
+            int index=0;
+            while(rs.next()){
+                index++;
+            }
+            
+            return index;
+        } catch (SQLException ex) {
+            Logger.getLogger(BookDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+     
+     public int getCountBookByCategoryTotal(int category_id){
+         
+        Connection connection = JDBCConnection.getJDBCConnection();
+        
+        String sql = "SELECT * FROM dbo.Book WHERE category_id = ?";    
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, category_id);
+            ResultSet rs = preparedStatement.executeQuery();
+            
+            int total = 0;
+            while(rs.next()){
+                total += rs.getInt("amount");
+            }
+            
+            return total;
+        } catch (SQLException ex) {
+            Logger.getLogger(BookDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+    
 }

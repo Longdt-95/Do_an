@@ -20,6 +20,7 @@ public class MainJFrame extends javax.swing.JFrame {
         listItem.add(new DanhMucBean("Sach", jpnKhoaHoc, jlbSach));
         listItem.add(new DanhMucBean("DocGia", jpnLopHoc, jlbDocGia));
         listItem.add(new DanhMucBean("MuonTra", jpnThongKe, jlbMuonTra));
+        listItem.add(new DanhMucBean("TheLoai", jpnTheLoai, jlbTheLoai));
         
         controller.setEvent(listItem);
     }
@@ -43,6 +44,8 @@ public class MainJFrame extends javax.swing.JFrame {
         jpnThongKe = new javax.swing.JPanel();
         jlbMuonTra = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jpnTheLoai = new javax.swing.JPanel();
+        jlbTheLoai = new javax.swing.JLabel();
         jpnView = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -126,7 +129,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jlbSach.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jlbSach.setForeground(new java.awt.Color(255, 255, 255));
-        jlbSach.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/leduyanh/images/icon_menu2_white_24dp.png"))); // NOI18N
+        jlbSach.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/leduyanh/images/baseline_library_books_white_18dp.png"))); // NOI18N
         jlbSach.setText("Quản Lý Sách");
 
         javax.swing.GroupLayout jpnKhoaHocLayout = new javax.swing.GroupLayout(jpnKhoaHoc);
@@ -198,6 +201,30 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 255, 204));
         jLabel2.setText("LÊ DUY ANH - 20160089");
 
+        jpnTheLoai.setBackground(new java.awt.Color(76, 175, 80));
+
+        jlbTheLoai.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jlbTheLoai.setForeground(new java.awt.Color(255, 255, 255));
+        jlbTheLoai.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/leduyanh/images/icon_menu2_white_24dp.png"))); // NOI18N
+        jlbTheLoai.setText("Quản Lý Thể Loại");
+
+        javax.swing.GroupLayout jpnTheLoaiLayout = new javax.swing.GroupLayout(jpnTheLoai);
+        jpnTheLoai.setLayout(jpnTheLoaiLayout);
+        jpnTheLoaiLayout.setHorizontalGroup(
+            jpnTheLoaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpnTheLoaiLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jlbTheLoai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(15, 15, 15))
+        );
+        jpnTheLoaiLayout.setVerticalGroup(
+            jpnTheLoaiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpnTheLoaiLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jlbTheLoai, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
+        );
+
         javax.swing.GroupLayout jpnMenuLayout = new javax.swing.GroupLayout(jpnMenu);
         jpnMenu.setLayout(jpnMenuLayout);
         jpnMenuLayout.setHorizontalGroup(
@@ -205,16 +232,20 @@ public class MainJFrame extends javax.swing.JFrame {
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jpnMenuLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jpnLopHoc, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jpnKhoaHoc, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jpnHocVien, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jpnTrangChu, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jpnThongKe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jpnMenuLayout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(jLabel2)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jpnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpnMenuLayout.createSequentialGroup()
+                        .addGroup(jpnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jpnLopHoc, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jpnKhoaHoc, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jpnHocVien, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jpnTrangChu, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jpnThongKe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jpnMenuLayout.createSequentialGroup()
+                                .addGap(38, 38, 38)
+                                .addComponent(jLabel2)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jpnTheLoai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jpnMenuLayout.setVerticalGroup(
             jpnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -222,15 +253,17 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addComponent(jpnTrangChu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
-                .addComponent(jpnHocVien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jpnTheLoai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
                 .addComponent(jpnKhoaHoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
-                .addComponent(jpnLopHoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jpnThongKe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 212, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jpnLopHoc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jpnHocVien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 136, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addContainerGap())
         );
@@ -326,12 +359,14 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jlbMuonTra;
     private javax.swing.JLabel jlbNhanVien;
     private javax.swing.JLabel jlbSach;
+    private javax.swing.JLabel jlbTheLoai;
     private javax.swing.JLabel jlbTrangChu;
     private javax.swing.JPanel jpnHocVien;
     private javax.swing.JPanel jpnKhoaHoc;
     private javax.swing.JPanel jpnLopHoc;
     private javax.swing.JPanel jpnMenu;
     private javax.swing.JPanel jpnRoot;
+    private javax.swing.JPanel jpnTheLoai;
     private javax.swing.JPanel jpnThongKe;
     private javax.swing.JPanel jpnTrangChu;
     private javax.swing.JPanel jpnView;

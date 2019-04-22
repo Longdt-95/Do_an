@@ -1,11 +1,12 @@
 package com.leduyanh.controller;
 
 import com.leduyanh.bean.DanhMucBean;
-import com.leduyanh.view.ReaderJPanel;
+import com.leduyanh.view.reader.ReaderJPanel;
 import com.leduyanh.view.bill.BillJPanel;
-import com.leduyanh.view.UserJPanel;
+import com.leduyanh.view.user.UserJPanel;
 import com.leduyanh.view.book.BookJPanel;
 import com.leduyanh.view.HomeJPanel;
+import com.leduyanh.view.category.CategoryJPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -78,8 +79,11 @@ public class ChuyenManHinhController {
                     node = new BillJPanel();
                     break;
                 case "Sach":
-                node = new BookJPanel();
-                break;
+                    node = new BookJPanel();
+                    break;
+                case "TheLoai":
+                    node = new CategoryJPanel();
+                    break;
                 // more ...
                 default:
                     node = new HomeJPanel();

@@ -1,13 +1,16 @@
 
 package com.leduyanh.view.bill;
 
+import com.leduyanh.controller.ExportFileExcel;
 import com.leduyanh.model.Bill;
-import com.leduyanh.model.Book;
 import com.leduyanh.model.User;
 import com.leduyanh.service.BillService;
 import com.leduyanh.service.ReaderService;
 import com.leduyanh.service.UserService;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -20,6 +23,7 @@ public class BillJPanel extends javax.swing.JPanel {
     private User userModel;
     private UserService userService;
     private ReaderService readerService;
+    private ExportFileExcel exportFileExcel;
     
     public BillJPanel() {
         initComponents();
@@ -30,7 +34,7 @@ public class BillJPanel extends javax.swing.JPanel {
             }
         };
 
-        bookTable.setModel(defaultTableModel);
+        billTable.setModel(defaultTableModel);
         defaultTableModel.addColumn("Mã phiếu");
         defaultTableModel.addColumn("Người mượn");
         defaultTableModel.addColumn("Nhân viên");
@@ -61,7 +65,9 @@ public class BillJPanel extends javax.swing.JPanel {
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        bookTable = new javax.swing.JTable();
+        billTable = new javax.swing.JTable();
+        exportButtom = new javax.swing.JButton();
+        exportFileTextField = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         addBillJButton = new javax.swing.JButton();
         showBillDetailButton = new javax.swing.JButton();
@@ -99,7 +105,7 @@ public class BillJPanel extends javax.swing.JPanel {
                 .addContainerGap(683, Short.MAX_VALUE))
         );
 
-        bookTable.setModel(new javax.swing.table.DefaultTableModel(
+        billTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -110,22 +116,45 @@ public class BillJPanel extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(bookTable);
+        jScrollPane1.setViewportView(billTable);
+
+        exportButtom.setBackground(new java.awt.Color(102, 102, 0));
+        exportButtom.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        exportButtom.setForeground(new java.awt.Color(255, 255, 255));
+        exportButtom.setText("Xuất file");
+        exportButtom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportButtomActionPerformed(evt);
+            }
+        });
+
+        exportFileTextField.setText("Tên file");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 712, Short.MAX_VALUE)
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(exportFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(exportButtom)))
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 663, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(exportButtom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(exportFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(82, 82, 82))
         );
 
         addBillJButton.setBackground(new java.awt.Color(51, 153, 0));
@@ -185,7 +214,7 @@ public class BillJPanel extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap(231, Short.MAX_VALUE)
                         .addComponent(refeshButton)
                         .addGap(18, 18, 18)
                         .addComponent(deleteButton)
@@ -235,7 +264,8 @@ public class BillJPanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 665, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 652, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -248,7 +278,7 @@ public class BillJPanel extends javax.swing.JPanel {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -268,13 +298,12 @@ public class BillJPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap(18, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addContainerGap(18, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -292,12 +321,12 @@ public class BillJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_refeshButtonActionPerformed
 
     private void showBillDetailButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showBillDetailButtonActionPerformed
-        int row = bookTable.getSelectedRow();
+        int row = billTable.getSelectedRow();
         if(row == -1){
             //JOptionPane.showMessageDialog(BillJPanel.this, "Vui lòng chọn sách trước!","Lỗi",JOptionPane.ERROR);
         }
         else{
-            int billId = Integer.valueOf(String.valueOf(bookTable.getValueAt(row, 0)));
+            int billId = Integer.valueOf(String.valueOf(billTable.getValueAt(row, 0)));
             new ShowBillDetailJFrame(billId).setVisible(true);
         }
     }//GEN-LAST:event_showBillDetailButtonActionPerformed
@@ -312,7 +341,7 @@ public class BillJPanel extends javax.swing.JPanel {
             }        
         };
          
-        bookTable.setModel(defaultTableModel);
+        billTable.setModel(defaultTableModel);
         defaultTableModel.addColumn("Mã phiếu");
         defaultTableModel.addColumn("Người mượn");
         defaultTableModel.addColumn("Nhân viên");
@@ -340,11 +369,31 @@ public class BillJPanel extends javax.swing.JPanel {
         
     }//GEN-LAST:event_deleteButtonActionPerformed
 
+    private void exportButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportButtomActionPerformed
+        exportFileExcel = new ExportFileExcel();
+        StringBuffer path = new StringBuffer();
+        path.append("C:\\Users\\Admin\\Desktop\\");
+        path.append(exportFileTextField.getText());
+        path.append(".xlsx");
+        String path2 = path.toString();
+
+        try {
+            exportFileExcel.writeToExcell(billTable,path2);
+            JOptionPane.showMessageDialog(null, "Lưu file thành công!");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Lưu file không thành công!");
+            Logger.getLogger(BillJPanel.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+    }//GEN-LAST:event_exportButtomActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBillJButton;
-    private javax.swing.JTable bookTable;
+    private javax.swing.JTable billTable;
     private javax.swing.JButton deleteButton;
+    private javax.swing.JButton exportButtom;
+    private javax.swing.JTextField exportFileTextField;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

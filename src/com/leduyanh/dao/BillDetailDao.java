@@ -16,11 +16,12 @@ public class BillDetailDao {
        Connection connection = JDBCConnection.getJDBCConnection();
        
         for(Integer book_id : book_ids){
-            String sql = "INSERT INTO dbo.bill_detail(bill_id, book_id) VALUES (?,?)";
+            String sql = "INSERT INTO dbo.bill_detail(bill_id, book_id, fined) VALUES (?,?,?)";
             try {
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setInt(1, bill_id);
                 preparedStatement.setInt(2, book_id);
+                preparedStatement.setString(3, "0");
 
                 int rs = preparedStatement.executeUpdate();
 
