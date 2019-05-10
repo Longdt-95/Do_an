@@ -1,18 +1,22 @@
 
 package com.leduyanh.view.book;
 
-import com.leduyanh.model.Book;
+import com.leduyanh.controller.ExportFileBookStatis;
+import com.leduyanh.controller.ExportFileExcel;
 import com.leduyanh.model.Category;
-import com.leduyanh.service.BookService;
 import com.leduyanh.service.CategoryService;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class StatisticalJFrame extends javax.swing.JFrame {
 
     DefaultTableModel defaultTableModel;
     CategoryService categoryService;
-    
+    ExportFileExcel exportFileExel;
     public StatisticalJFrame() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -46,9 +50,12 @@ public class StatisticalJFrame extends javax.swing.JFrame {
         categoryButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
+        authorButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         statiJTable = new javax.swing.JTable();
+        exportFileButton = new javax.swing.JButton();
+        filenameTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,6 +83,16 @@ public class StatisticalJFrame extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(153, 51, 255));
         jLabel8.setText("Lê Duy Anh - 20160089");
 
+        authorButton.setBackground(new java.awt.Color(0, 153, 0));
+        authorButton.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        authorButton.setForeground(new java.awt.Color(255, 255, 255));
+        authorButton.setText("Theo Tác Giả");
+        authorButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                authorButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -84,6 +101,8 @@ public class StatisticalJFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(authorButton)
+                .addGap(18, 18, 18)
                 .addComponent(categoryButton)
                 .addGap(18, 18, 18)
                 .addComponent(backButton)
@@ -96,7 +115,8 @@ public class StatisticalJFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(categoryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
+                    .addComponent(jLabel8)
+                    .addComponent(authorButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -113,20 +133,42 @@ public class StatisticalJFrame extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(statiJTable);
 
+        exportFileButton.setBackground(new java.awt.Color(153, 51, 0));
+        exportFileButton.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        exportFileButton.setForeground(new java.awt.Color(255, 255, 255));
+        exportFileButton.setText("Xuất File");
+        exportFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportFileButtonActionPerformed(evt);
+            }
+        });
+
+        filenameTextField.setText("Tên File");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 744, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 744, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(filenameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(exportFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(exportFileButton, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                    .addComponent(filenameTextField))
                 .addContainerGap())
         );
 
@@ -147,7 +189,8 @@ public class StatisticalJFrame extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -179,41 +222,49 @@ public class StatisticalJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_categoryButtonActionPerformed
 
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(StatisticalJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(StatisticalJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(StatisticalJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(StatisticalJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void authorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_authorButtonActionPerformed
+        defaultTableModel = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Không cho phép người dùng sửa dữ liệu
+            }        
+        };
+        statiJTable.setModel(defaultTableModel);
+        defaultTableModel.addColumn("STT");
+        defaultTableModel.addColumn("Tác giả");
+        defaultTableModel.addColumn("Số Lượng");
+        
+        defaultTableModel.addRow(new Object[]{1,"duy anh",6});
+        defaultTableModel.addRow(new Object[]{2,"david",3});
+        defaultTableModel.addRow(new Object[]{3,"nguyễn nhật ánh",2});
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new StatisticalJFrame().setVisible(true);
-            }
-        });
-    }
+    }//GEN-LAST:event_authorButtonActionPerformed
+
+    private void exportFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportFileButtonActionPerformed
+        ExportFileBookStatis export = new ExportFileBookStatis();
+        StringBuffer path = new StringBuffer();
+        path.append("C:\\Users\\Admin\\Desktop\\");
+        path.append(filenameTextField.getText());
+        path.append(".docx");
+        String path2 = path.toString();
+        if(statiJTable.getColumnCount() == 4){
+            export.ExportFileCategory(statiJTable,path2);
+        }
+        else{
+            export.ExportFileAuthor(statiJTable, path2);
+        }
+        
+        //exportFileExel.writeToExcell(bookTable,path2);
+        JOptionPane.showMessageDialog(null, "Lưu file thành công!");
+    }//GEN-LAST:event_exportFileButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton authorButton;
     private javax.swing.JButton backButton;
     private javax.swing.JButton categoryButton;
+    private javax.swing.JButton exportFileButton;
+    private javax.swing.JTextField filenameTextField;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

@@ -2,6 +2,7 @@
 package com.leduyanh.view.user;
 
 import com.leduyanh.controller.ExportFileExcel;
+import com.leduyanh.controller.ExportFileUser;
 import com.leduyanh.model.User;
 import com.leduyanh.service.UserService;
 import java.io.IOException;
@@ -76,6 +77,7 @@ public class UserJPanel extends javax.swing.JPanel {
         refeshButton = new javax.swing.JButton();
         addUserbutton = new javax.swing.JButton();
         unlockButton = new javax.swing.JButton();
+        statisButton = new javax.swing.JButton();
 
         userTable.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         userTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -151,11 +153,11 @@ public class UserJPanel extends javax.swing.JPanel {
                             .addComponent(typeSearchJCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(exportButtom, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-                    .addComponent(exportFileTextField))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(exportButtom, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(exportFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -200,12 +202,24 @@ public class UserJPanel extends javax.swing.JPanel {
             }
         });
 
+        statisButton.setBackground(new java.awt.Color(0, 102, 102));
+        statisButton.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        statisButton.setForeground(new java.awt.Color(255, 255, 255));
+        statisButton.setText("Thống Kê");
+        statisButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                statisButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(statisButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(blockButton)
                 .addGap(18, 18, 18)
                 .addComponent(unlockButton)
@@ -223,7 +237,8 @@ public class UserJPanel extends javax.swing.JPanel {
                     .addComponent(addUserbutton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(refeshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(blockButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(unlockButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(unlockButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(statisButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 13, Short.MAX_VALUE))
         );
 
@@ -244,8 +259,8 @@ public class UserJPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -261,7 +276,7 @@ public class UserJPanel extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 762, Short.MAX_VALUE)
+            .addGap(0, 688, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -319,21 +334,16 @@ public class UserJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void exportButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportButtomActionPerformed
-        exportFileExel = new ExportFileExcel();
+        ExportFileUser export = new ExportFileUser();
         StringBuffer path = new StringBuffer();
         path.append("C:\\Users\\Admin\\Desktop\\");
         path.append(exportFileTextField.getText());
-        path.append(".xlsx");
+        path.append(".docx");
         String path2 = path.toString();
-        
-        try {
-            exportFileExel.writeToExcell(userTable,path2);
-            JOptionPane.showMessageDialog(null, "Lưu file thành công!");
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Lưu file không thành công!");
-            Logger.getLogger(UserJPanel.class.getName()).log(Level.SEVERE, null, ex);
-            
-        }      
+
+        export.ExportFileWord(userTable,path2);
+        //exportFileExel.writeToExcell(bookTable,path2);
+        JOptionPane.showMessageDialog(null, "Lưu file thành công!");      
     }//GEN-LAST:event_exportButtomActionPerformed
 
     private void refeshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refeshButtonActionPerformed
@@ -377,6 +387,10 @@ public class UserJPanel extends javax.swing.JPanel {
         JOptionPane.showMessageDialog(null, "Đã mở khóa tài khoản!");
     }//GEN-LAST:event_unlockButtonActionPerformed
 
+    private void statisButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statisButtonActionPerformed
+        new StatisticalJFrame().setVisible(true);
+    }//GEN-LAST:event_statisButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addUserbutton;
@@ -390,6 +404,7 @@ public class UserJPanel extends javax.swing.JPanel {
     private javax.swing.JButton refeshButton;
     private javax.swing.JButton searchButton;
     private javax.swing.JTextField searchJTextField;
+    private javax.swing.JButton statisButton;
     private javax.swing.JComboBox<String> typeSearchJCombobox;
     private javax.swing.JButton unlockButton;
     private javax.swing.JTable userTable;

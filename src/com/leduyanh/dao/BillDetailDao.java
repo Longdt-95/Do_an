@@ -54,8 +54,27 @@ public class BillDetailDao {
                 billdts.add(billdt);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(BookDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BillDetailDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return billdts;
+    }
+    
+    public void update(int billDetail_id,int fined){
+        Connection connection = JDBCConnection.getJDBCConnection();
+        String sql = "UPDATE dbo.bill_detail SET fined=?,date_pay=? WHERE book_id=?";
+        
+        long millis=System.currentTimeMillis();  
+        java.sql.Date date = new java.sql.Date(millis); 
+        
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, fined);
+            preparedStatement.setString(2, date.toString());
+            preparedStatement.setInt(3, billDetail_id);
+            int rs = preparedStatement.executeUpdate();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(BillDetailDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

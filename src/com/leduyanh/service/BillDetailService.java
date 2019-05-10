@@ -20,4 +20,8 @@ public class BillDetailService {
         return billDetailDao.getAllBillDetail(billId);
     }
     
+    public void update(int billDetail_id,int fined){
+        billDetailDao.update(billDetail_id, fined);
+    }
+    
 }

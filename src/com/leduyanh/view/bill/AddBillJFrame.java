@@ -2,9 +2,11 @@
 package com.leduyanh.view.bill;
 
 import com.leduyanh.model.Bill;
+import com.leduyanh.model.Book;
 import com.leduyanh.model.Reader;
 import com.leduyanh.service.BillDetailService;
 import com.leduyanh.service.BillService;
+import com.leduyanh.service.BookService;
 import com.leduyanh.service.ReaderService;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,9 @@ public class AddBillJFrame extends javax.swing.JFrame {
     private BillDetailService billDetailService;
     private Reader readerModel;
     private ReaderService readerService;
+    private BookService bookService;
+    private Book bookModel;
+    private StringBuffer listIdBook = new StringBuffer();
       
     public AddBillJFrame() {
         initComponents();
@@ -24,18 +29,42 @@ public class AddBillJFrame extends javax.swing.JFrame {
         
         readerModel = new Reader();
         readerService = new ReaderService();
+        bookModel = new Book();
+        bookService = new BookService();
+        
         
         List<Reader> readersList = readerService.getAllReader();
+        List<Book> booksList = bookService.getAllBook();
         
         String []arrReader;
         arrReader = new String[readersList.size()];
         
         int i=0;
+        int length = 0;
+        StringBuffer tmp = new StringBuffer();
         for(Reader item : readersList){
-            arrReader[i] = String.valueOf(item.getReader_id());
+            tmp.append(String.valueOf(item.getReader_id()) +" - "+ readerService.getReaderById(item.getReader_id()).getName());
+            arrReader[i] = tmp.toString();
             i++;
+            length = tmp.length();
+            tmp.delete(0, length);
         }
         readerJComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(arrReader));
+        
+        String []arrBook;
+        arrBook = new String[booksList.size()];
+        
+        int j=0;
+        int length2 = 0;
+        StringBuffer tmp2 = new StringBuffer();
+        for(Book item : booksList){
+            tmp2.append(String.valueOf(item.getBook_id()) +" - "+ item.getTitle());
+            arrBook[j] = tmp2.toString();
+            j++;
+            length2 = tmp2.length();
+            tmp2.delete(0, length2);
+        }
+        chooseBookjComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(arrBook));
     }
 
     
@@ -51,13 +80,13 @@ public class AddBillJFrame extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         bookIdTextField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        depositTextField = new javax.swing.JTextField();
         readerJComboBox = new javax.swing.JComboBox<>();
+        chooseBookjComboBox = new javax.swing.JComboBox<>();
+        chooseBookButton = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         dateTextField = new javax.swing.JTextField();
@@ -65,6 +94,8 @@ public class AddBillJFrame extends javax.swing.JFrame {
         dateHenTextField = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        depositTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -126,9 +157,6 @@ public class AddBillJFrame extends javax.swing.JFrame {
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
-        jLabel1.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jLabel1.setText("Tiền đặt cọc");
-
         jLabel2.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel2.setText("Mã sách");
 
@@ -138,7 +166,20 @@ public class AddBillJFrame extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel6.setText("Mã độc giả");
 
+        readerJComboBox.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         readerJComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        chooseBookjComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        chooseBookButton.setBackground(new java.awt.Color(0, 153, 51));
+        chooseBookButton.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        chooseBookButton.setForeground(new java.awt.Color(255, 255, 255));
+        chooseBookButton.setText("Chọn");
+        chooseBookButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chooseBookButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -148,17 +189,19 @@ public class AddBillJFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(bookIdTextField)
-                    .addComponent(depositTextField)
+                    .addComponent(readerJComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel3))
                             .addComponent(jLabel6))
                         .addGap(0, 119, Short.MAX_VALUE))
-                    .addComponent(readerJComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(chooseBookjComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(chooseBookButton)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -168,17 +211,17 @@ public class AddBillJFrame extends javax.swing.JFrame {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(readerJComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bookIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(depositTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(chooseBookjComboBox)
+                    .addComponent(chooseBookButton, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(bookIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28))
         );
 
         jLabel4.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
@@ -192,6 +235,9 @@ public class AddBillJFrame extends javax.swing.JFrame {
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 2, 13)); // NOI18N
         jLabel10.setText("(dd/mm/yyyy)");
+
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jLabel1.setText("Tiền đặt cọc");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -211,8 +257,10 @@ public class AddBillJFrame extends javax.swing.JFrame {
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel1))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(depositTextField))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -230,7 +278,11 @@ public class AddBillJFrame extends javax.swing.JFrame {
                     .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dateHenTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(108, Short.MAX_VALUE))
+                .addGap(12, 12, 12)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(depositTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -307,8 +359,13 @@ public class AddBillJFrame extends javax.swing.JFrame {
         billModel.setDate(dateTextField.getText());
         billModel.setDate_hen(dateHenTextField.getText());
         billModel.setDeposit(depositTextField.getText());
-        billModel.setReader_id(Integer.valueOf(String.valueOf(readerJComboBox.getSelectedItem())));
-        billModel.setUser_id(12);
+        billModel.setUser_id(15);
+        
+       // billModel.setReader_id(Integer.valueOf(String.valueOf(readerJComboBox.getSelectedItem())));
+        
+        StringTokenizer readerToken = new StringTokenizer(String.valueOf(readerJComboBox.getSelectedItem()));
+        
+        billModel.setReader_id(Integer.valueOf(readerToken.nextToken()));
         
         billService.addBill(billModel);
         
@@ -324,6 +381,18 @@ public class AddBillJFrame extends javax.swing.JFrame {
         
         this.dispose();
     }//GEN-LAST:event_addBillButtonActionPerformed
+
+    private void chooseBookButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseBookButtonActionPerformed
+        String bookChoose;
+        bookChoose = String.valueOf(chooseBookjComboBox.getSelectedItem());
+
+        StringTokenizer idBookToken = new StringTokenizer(bookChoose);       
+        String idBookChoose;
+        idBookChoose = idBookToken.nextToken();
+        listIdBook.append(idBookChoose+" ");
+
+        bookIdTextField.setText(listIdBook.toString());
+    }//GEN-LAST:event_chooseBookButtonActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -361,6 +430,8 @@ public class AddBillJFrame extends javax.swing.JFrame {
     private javax.swing.JButton addBillButton;
     private javax.swing.JButton backButton;
     private javax.swing.JTextField bookIdTextField;
+    private javax.swing.JButton chooseBookButton;
+    private javax.swing.JComboBox<String> chooseBookjComboBox;
     private javax.swing.JTextField dateHenTextField;
     private javax.swing.JTextField dateTextField;
     private javax.swing.JTextField depositTextField;

@@ -4,6 +4,7 @@ package com.leduyanh.service;
 import com.leduyanh.dao.UserDao;
 import com.leduyanh.model.User;
 import java.util.List;
+import javax.swing.JTable;
 
 
 public class UserService {
@@ -47,5 +48,17 @@ public class UserService {
     
     public void unlockUser(int user_id){
         userDao.unlockUser(user_id);
+    }
+    
+    public User CheckLogin(String userName, String passWord){
+        return userDao.CheckLogin(userName, passWord);
+    }
+    
+    public JTable StatisUserByName(){
+        return userDao.StatisUserByName();
+    }
+    
+    public JTable StatisUserByRole(){
+        return userDao.StatisUserByRole();
     }
 }

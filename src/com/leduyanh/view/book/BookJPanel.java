@@ -5,6 +5,7 @@
  */
 package com.leduyanh.view.book;
 
+import com.leduyanh.controller.ExportFileBook;
 import com.leduyanh.controller.ExportFileExcel;
 import com.leduyanh.view.book.AddBookJFrame;
 import com.leduyanh.model.Book;
@@ -27,6 +28,7 @@ public class BookJPanel extends javax.swing.JPanel {
     DefaultTableModel defaultTableModel;
     CategoryService categoryService;
     ExportFileExcel exportFileExel;
+    List<Book> books;
     public BookJPanel() {
         initComponents();
         bookService = new BookService();
@@ -47,7 +49,7 @@ public class BookJPanel extends javax.swing.JPanel {
         defaultTableModel.addColumn("Tác giả");
         defaultTableModel.addColumn("Số lượng");
         
-        List<Book> books = bookService.getAllBook();
+        books = bookService.getAllBook();
         
         for(Book book : books){
             defaultTableModel.addRow(new Object[]{book.getBook_id(),book.getTitle(),categoryService.getCategoryById(book.getCategory_id()),book.getAuthor(),book.getAmount()});
@@ -66,6 +68,7 @@ public class BookJPanel extends javax.swing.JPanel {
         searchButton = new javax.swing.JButton();
         exportFileButtom = new javax.swing.JButton();
         exportFileTextField = new javax.swing.JTextField();
+        exportFileButtom1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         updateBookButton = new javax.swing.JButton();
         refeshButton = new javax.swing.JButton();
@@ -112,6 +115,16 @@ public class BookJPanel extends javax.swing.JPanel {
 
         exportFileTextField.setText("Tên file");
 
+        exportFileButtom1.setBackground(new java.awt.Color(0, 0, 153));
+        exportFileButtom1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        exportFileButtom1.setForeground(new java.awt.Color(255, 255, 255));
+        exportFileButtom1.setText("Nhập File");
+        exportFileButtom1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportFileButtom1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -121,18 +134,17 @@ public class BookJPanel extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(typeSearchJCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(searchJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(exportFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(exportFileButtom)))))
+                        .addComponent(exportFileButtom1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(exportFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(exportFileButtom))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(typeSearchJCombobox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(searchJTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -147,11 +159,12 @@ public class BookJPanel extends javax.swing.JPanel {
                             .addComponent(typeSearchJCombobox, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(exportFileButtom, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-                    .addComponent(exportFileTextField))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(exportFileButtom, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(exportFileTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(exportFileButtom1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -250,8 +263,8 @@ public class BookJPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -261,7 +274,7 @@ public class BookJPanel extends javax.swing.JPanel {
 
     private void refeshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refeshButtonActionPerformed
         defaultTableModel.setRowCount(0);
-        List<Book> books = bookService.getAllBook();
+        books = bookService.getAllBook();
         
         for(Book book : books){
             defaultTableModel.addRow(new Object[]{book.getBook_id(),book.getTitle(),categoryService.getCategoryById(book.getCategory_id()),book.getAuthor(),book.getAmount()});
@@ -295,7 +308,7 @@ public class BookJPanel extends javax.swing.JPanel {
         defaultTableModel.addColumn("Số lượng");
         
         String typeSearch = String.valueOf(typeSearchJCombobox.getSelectedItem());
-        List<Book> books;
+
         if(typeSearch.equals("Theo tên")){
             books = bookService.searchBookFromTitle(searchKeyWord);
         }
@@ -326,25 +339,26 @@ public class BookJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void exportFileButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportFileButtomActionPerformed
-        exportFileExel = new ExportFileExcel();
+        ExportFileBook export = new ExportFileBook();
         StringBuffer path = new StringBuffer();
         path.append("C:\\Users\\Admin\\Desktop\\");
         path.append(exportFileTextField.getText());
-        path.append(".xlsx");
+        path.append(".docx");
         String path2 = path.toString();
-        
-        try {
-            exportFileExel.writeToExcell(bookTable,path2);
-            JOptionPane.showMessageDialog(null, "Lưu file thành công!");
-        } catch (IOException ex) {
-            Logger.getLogger(BookJPanel.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Lưu file không thành công!");
-        }       
+
+        export.ExportFileWord(bookTable,path2);
+        //exportFileExel.writeToExcell(bookTable,path2);
+        JOptionPane.showMessageDialog(null, "Lưu file thành công!");
+      
     }//GEN-LAST:event_exportFileButtomActionPerformed
 
     private void statiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statiButtonActionPerformed
         new StatisticalJFrame().setVisible(true);
     }//GEN-LAST:event_statiButtonActionPerformed
+
+    private void exportFileButtom1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportFileButtom1ActionPerformed
+        new ImportFileDataJFrame().setVisible(true);
+    }//GEN-LAST:event_exportFileButtom1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -352,6 +366,7 @@ public class BookJPanel extends javax.swing.JPanel {
     private javax.swing.JTable bookTable;
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton exportFileButtom;
+    private javax.swing.JButton exportFileButtom1;
     private javax.swing.JTextField exportFileTextField;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

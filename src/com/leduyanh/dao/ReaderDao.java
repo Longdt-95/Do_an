@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTable;
+import javax.swing.table.TableModel;
+import net.proteanit.sql.DbUtils;
+
 
 public class ReaderDao {
     public Reader getReaderById(int reader_id){
@@ -206,5 +210,62 @@ public class ReaderDao {
             Logger.getLogger(ReaderDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return readers;
+    }
+    
+    public JTable StatisReaderByAddress(){
+
+        JTable table = new JTable();
+        Connection connection = JDBCConnection.getJDBCConnection();
+        
+        String sql = "SELECT address, COUNT(address) FROM dbo.Reader GROUP BY address";    
+       
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            
+            ResultSet rs = preparedStatement.executeQuery();
+            table.setModel(DbUtils.resultSetToTableModel(rs));
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ReaderDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return table;
+    }
+    
+    public JTable StatisReaderByName(){
+        
+        JTable table = new JTable();
+        Connection connection = JDBCConnection.getJDBCConnection();
+        
+        String sql = "SELECT name, COUNT(name) FROM dbo.Reader GROUP BY name";    
+       
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            
+            ResultSet rs = preparedStatement.executeQuery();
+            table.setModel(DbUtils.resultSetToTableModel(rs));
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ReaderDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return table;
+    }
+    
+    public JTable StatisReaderByBook(){
+        
+        JTable table = new JTable();
+        Connection connection = JDBCConnection.getJDBCConnection();
+        
+        String sql = "SELECT reader_id, COUNT(reader_id) FROM dbo.Bill INNER JOIN dbo.bill_detail ON dbo.Bill.bill_id = dbo.bill_detail.bill_id GROUP BY reader_id";    
+       
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            
+            ResultSet rs = preparedStatement.executeQuery();
+            table.setModel(DbUtils.resultSetToTableModel(rs));
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ReaderDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return table;
     }
 }

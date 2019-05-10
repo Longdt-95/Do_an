@@ -5,6 +5,7 @@ import com.leduyanh.dao.ReaderDao;
 import com.leduyanh.model.Reader;
 import com.leduyanh.model.User;
 import java.util.List;
+import javax.swing.JTable;
 
 public class ReaderService {
     private ReaderDao readerDao;
@@ -44,4 +45,17 @@ public class ReaderService {
     public List<Reader> searchReaderFromPhone(String phone){
         return readerDao.searchReaderFromPhone(phone);
     }
+    
+    public JTable StatisReaderByAddress(){
+        return readerDao.StatisReaderByAddress();
+    }
+    
+    public JTable StatisReaderByName(){
+        return readerDao.StatisReaderByName();
+    }
+    
+    public JTable StatisReaderByBook(){
+        return readerDao.StatisReaderByBook();
+    }
+    
 }

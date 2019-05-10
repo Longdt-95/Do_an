@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTable;
+import net.proteanit.sql.DbUtils;
 
 /**
  *
@@ -205,5 +207,46 @@ public class BillDao {
             Logger.getLogger(BookDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return bills;
+    }
+    
+    public JTable StatisUserByDate(){
+        
+        JTable table = new JTable();
+        Connection connection = JDBCConnection.getJDBCConnection();
+        
+        String sql = "SELECT date, COUNT(date) FROM dbo.Bill GROUP BY date";    
+       
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            
+            ResultSet rs = preparedStatement.executeQuery();
+            table.setModel(DbUtils.resultSetToTableModel(rs));
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ReaderDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return table;
+    }
+    
+    public int getCountBookByDate(String date){
+         
+        Connection connection = JDBCConnection.getJDBCConnection();
+        
+        String sql = "SELECT * FROM dbo.Bill INNER JOIN dbo.bill_detail ON dbo.Bill.bill_id = dbo.bill_detail.bill_id where date = ? ORDER BY date desc";    
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, date);
+            ResultSet rs = preparedStatement.executeQuery();
+            
+            int index=0;
+            while(rs.next()){
+                index++;
+            }
+            
+            return index;
+        } catch (SQLException ex) {
+            Logger.getLogger(BookDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
     }
 }

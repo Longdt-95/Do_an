@@ -188,7 +188,9 @@ public class UpdateBookJFrame extends javax.swing.JFrame {
         jLabel6.setText("Thông tin:");
 
         introduce.setColumns(20);
+        introduce.setLineWrap(true);
         introduce.setRows(5);
+        introduce.setWrapStyleWord(true);
         jScrollPane1.setViewportView(introduce);
 
         jLabel9.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N

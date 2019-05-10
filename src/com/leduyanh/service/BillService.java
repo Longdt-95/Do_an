@@ -4,6 +4,7 @@ package com.leduyanh.service;
 import com.leduyanh.dao.BillDao;
 import com.leduyanh.model.Bill;
 import java.util.List;
+import javax.swing.JTable;
 
 public class BillService {
     private BillDao billDao;
@@ -38,5 +39,13 @@ public class BillService {
     
     public List<Bill> searchBillFromDate(String searchKeyWord){
         return billDao.searchBillFromDate(searchKeyWord);
+    }
+    
+    public JTable StatisUserByDate(){
+        return billDao.StatisUserByDate();
+    }
+    
+    public int getCountBookByDate(String date){
+        return billDao.getCountBookByDate(date);
     }
 }
