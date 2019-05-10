@@ -49,7 +49,7 @@ public class ExportFileReader {
             XWPFParagraph ngayThang = document.createParagraph();
             XWPFRun run2 = ngayThang.createRun();
             ngayThang.setAlignment(ParagraphAlignment.RIGHT);
-            run2.setText("Ngày 09 tháng 6 năm 2019       ");
+            run2.setText("Ngày 16 tháng 5 năm 2019       ");
             run2.setFontSize(12);
             run2.setItalic(true);
             run2.setFontFamily("Times New Roman");
@@ -156,7 +156,7 @@ public class ExportFileReader {
             XWPFParagraph ngayThang = document.createParagraph();
             XWPFRun run2 = ngayThang.createRun();
             ngayThang.setAlignment(ParagraphAlignment.RIGHT);
-            run2.setText("Ngày 09 tháng 6 năm 2019       ");
+            run2.setText("Ngày 16 tháng 5 năm 2019       ");
             run2.setFontSize(12);
             run2.setItalic(true);
             run2.setFontFamily("Times New Roman");
@@ -258,7 +258,7 @@ public class ExportFileReader {
             XWPFParagraph ngayThang = document.createParagraph();
             XWPFRun run2 = ngayThang.createRun();
             ngayThang.setAlignment(ParagraphAlignment.RIGHT);
-            run2.setText("Ngày 09 tháng 6 năm 2019       ");
+            run2.setText("Ngày 16 tháng 5 năm 2019       ");
             run2.setFontSize(12);
             run2.setItalic(true);
             run2.setFontFamily("Times New Roman");
@@ -360,7 +360,7 @@ public class ExportFileReader {
             XWPFParagraph ngayThang = document.createParagraph();
             XWPFRun run2 = ngayThang.createRun();
             ngayThang.setAlignment(ParagraphAlignment.RIGHT);
-            run2.setText("Ngày 09 tháng 6 năm 2019       ");
+            run2.setText("Ngày 16 tháng 5 năm 2019       ");
             run2.setFontSize(12);
             run2.setItalic(true);
             run2.setFontFamily("Times New Roman");
