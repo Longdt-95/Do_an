@@ -17,7 +17,7 @@ public class ExportFileExcel {
    
     
     public void writeToExcell(JTable table, String path) throws FileNotFoundException, IOException {
-        new WorkbookFactory();
+        new WorkbookFactory() {};
         Workbook wb = new XSSFWorkbook(); //Excell workbook
         Sheet sheet = wb.createSheet(); //WorkSheet
         Row row = sheet.createRow(2); //Row created at line 3

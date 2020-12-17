@@ -6,6 +6,7 @@ import com.leduyanh.service.ReaderService;
 import com.leduyanh.service.UserService;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable;
@@ -19,7 +20,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 public class ExportFileBillDetail {
-    public void ExportFileWord(JTable table,String fileName,Bill billModel,String fined) {
+    public void ExportFileWord(JTable table,String fileName,Bill billModel,String fined) throws SQLException {
         
         ReaderService readerService = new ReaderService();
         UserService userService = new UserService();

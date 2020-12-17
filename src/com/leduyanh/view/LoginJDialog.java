@@ -69,6 +69,11 @@ public class LoginJDialog extends javax.swing.JDialog {
         btnSubmit.setForeground(new java.awt.Color(255, 255, 255));
         btnSubmit.setText("ĐĂNG NHẬP");
         btnSubmit.setBorder(null);
+        btnSubmit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubmitActionPerformed(evt);
+            }
+        });
 
         jlbMsg.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
         jlbMsg.setForeground(new java.awt.Color(255, 0, 0));
@@ -155,6 +160,10 @@ public class LoginJDialog extends javax.swing.JDialog {
     private void jtfMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfMatKhauActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfMatKhauActionPerformed
+
+    private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSubmitActionPerformed
 
     /**
      * @param args the command line arguments

@@ -3,6 +3,7 @@ package com.leduyanh.service;
 
 import com.leduyanh.dao.UserDao;
 import com.leduyanh.model.User;
+import java.sql.SQLException;
 import java.util.List;
 import javax.swing.JTable;
 
@@ -14,11 +15,11 @@ public class UserService {
         userDao = new UserDao();
     }
     
-    public User getUserById(int user_id){
+    public User getUserById(int user_id) throws SQLException{
         return userDao.getUserById(user_id);
     }
     
-    public List<User> getAllUser(){
+    public List<User> getAllUser() throws SQLException{
         return userDao.getAllUser();
     }
     

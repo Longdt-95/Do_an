@@ -12,7 +12,10 @@ import com.leduyanh.service.BookService;
 import com.leduyanh.service.CategoryService;
 import com.leduyanh.service.ReaderService;
 import com.leduyanh.service.UserService;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -29,7 +32,7 @@ public class ShowBillDetailJFrame extends javax.swing.JFrame {
     private CategoryService categoryService;
     private CaculatorFined caculatorFined;
     
-    public ShowBillDetailJFrame(int billId) {
+    public ShowBillDetailJFrame(int billId) throws SQLException {
         initComponents();
         this.setLocationRelativeTo(null);
         
@@ -514,18 +517,22 @@ public class ShowBillDetailJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_updateBookButtonActionPerformed
 
     private void exportFileButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportFileButtomActionPerformed
-        ExportFileBillDetail export = new ExportFileBillDetail();
-        StringBuffer path = new StringBuffer();
-        path.append("C:\\Users\\Admin\\Desktop\\");
-        path.append(exportFileTextField.getText());
-        path.append(".docx");
-        String path2 = path.toString();
-        
-        String fined = finedLabel.getText();
-        
-        export.ExportFileWord(bookTable,path2,billModel,fined);
-        //exportFileExel.writeToExcell(bookTable,path2);
-        JOptionPane.showMessageDialog(null, "Lưu file thành công!");
+        try {
+            ExportFileBillDetail export = new ExportFileBillDetail();
+            StringBuffer path = new StringBuffer();
+            path.append("C:\\Users\\Admin\\Desktop\\");
+            path.append(exportFileTextField.getText());
+            path.append(".docx");
+            String path2 = path.toString();
+            
+            String fined = finedLabel.getText();
+            
+            export.ExportFileWord(bookTable,path2,billModel,fined);
+            //exportFileExel.writeToExcell(bookTable,path2);
+            JOptionPane.showMessageDialog(null, "Lưu file thành công!");
+        } catch (SQLException ex) {
+            Logger.getLogger(ShowBillDetailJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }//GEN-LAST:event_exportFileButtomActionPerformed
 
@@ -559,7 +566,11 @@ public class ShowBillDetailJFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ShowBillDetailJFrame(19).setVisible(true);
+                try {
+                    new ShowBillDetailJFrame(19).setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ShowBillDetailJFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

@@ -6,6 +6,7 @@ import com.leduyanh.controller.ExportFileUser;
 import com.leduyanh.model.User;
 import com.leduyanh.service.UserService;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +19,7 @@ public class UserJPanel extends javax.swing.JPanel {
     DefaultTableModel defaultTableModel;
     ExportFileExcel exportFileExel;
     
-    public UserJPanel() {
+    public UserJPanel() throws SQLException {
         initComponents();
         userService = new UserService();
         defaultTableModel = new DefaultTableModel(){
@@ -336,7 +337,7 @@ public class UserJPanel extends javax.swing.JPanel {
     private void exportButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportButtomActionPerformed
         ExportFileUser export = new ExportFileUser();
         StringBuffer path = new StringBuffer();
-        path.append("C:\\Users\\Admin\\Desktop\\");
+        path.append("C:\\Users\\Admin\\Desktop");
         path.append(exportFileTextField.getText());
         path.append(".docx");
         String path2 = path.toString();
@@ -347,25 +348,29 @@ public class UserJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_exportButtomActionPerformed
 
     private void refeshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refeshButtonActionPerformed
-        defaultTableModel.setRowCount(0);
-        List<User> users = userService.getAllUser();
-        
-        String chucVu;
-        String tinhTrang;
-        for(User user : users){
-            if(user.getLeve() == 1){
-                chucVu = "Quản trị viên";
+        try {
+            defaultTableModel.setRowCount(0);
+            List<User> users = userService.getAllUser();
+            
+            String chucVu;
+            String tinhTrang;
+            for(User user : users){
+                if(user.getLeve() == 1){
+                    chucVu = "Quản trị viên";
+                }
+                else{
+                    chucVu = "Nhân viên";
+                }
+                if(user.getFlag() == 0){
+                    tinhTrang = "Bị khóa!";
+                }
+                else{
+                    tinhTrang = "Hoạt động";
+                }
+                defaultTableModel.addRow(new Object[]{user.getUser_id(),user.getName(),user.getUsername(),user.getPhone(),chucVu,tinhTrang});
             }
-            else{
-                chucVu = "Nhân viên";
-            }
-            if(user.getFlag() == 0){
-                tinhTrang = "Bị khóa!";
-            }
-            else{
-                tinhTrang = "Hoạt động";
-            }
-            defaultTableModel.addRow(new Object[]{user.getUser_id(),user.getName(),user.getUsername(),user.getPhone(),chucVu,tinhTrang});
+        } catch (SQLException ex) {
+            Logger.getLogger(UserJPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_refeshButtonActionPerformed
 

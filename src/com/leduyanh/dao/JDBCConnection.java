@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class JDBCConnection {
     public static Connection getJDBCConnection(){
 		final String user = "sa";
-		final String password = "123456";
+		final String password = "saker0905971230";
 		final String url = "jdbc:sqlserver://localhost:1433;databaseName=QuanLyThuVien;user="+user+";password="+password;
 		try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -20,14 +20,5 @@ public class JDBCConnection {
 			e.printStackTrace();
 		}
 		return null;
-	}
-	public static void main(String[] args) {
-		Connection connection = getJDBCConnection();
-		if(connection!=null){
-			System.out.println("LÊ DUY ANH - 20160089 ket noi thanh cong");
-		}
-		else{
-			System.out.println("ket noi that bai");
-		}
 	}
 }

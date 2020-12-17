@@ -14,21 +14,22 @@ import javax.swing.JTable;
 import net.proteanit.sql.DbUtils;
 
 public class UserDao {
-    public User getUserById(int user_id){
+    public User getUserById(int user_id) throws SQLException{
          
         Connection connection = JDBCConnection.getJDBCConnection();
         
-        String sql = "SELECT * FROM dbo.Users WHERE user_id = ?";    
+        String sql = "SELECT * FROM dbo.Users WHERE user_id = ?"; 
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, user_id);
-            ResultSet rs = preparedStatement.executeQuery();
-            
+            rs = preparedStatement.executeQuery();
             while(rs.next()){
                 User user = new User();
                 user.setUser_id(rs.getInt("user_id"));
                 user.setName(rs.getString("name"));
-                user.setLeve(rs.getInt("leve"));
+                user.setLeve(rs.getInt("level"));
                 user.setPhone(rs.getString("phone"));
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
@@ -36,41 +37,60 @@ public class UserDao {
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (preparedStatement != null) {
+                rs.close();
+            }
+            if (connection != null) {
+                rs.close();
+            }
         }
         return null;
     }
     
-    public List<User> getAllUser(){
+    public List<User> getAllUser() throws SQLException{
         List<User> users = new ArrayList<User>();
         
         Connection connection = JDBCConnection.getJDBCConnection();
-        
-        String sql = "SELECT * FROM dbo.Users ORDER BY flag desc";    
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+        String sql = "SELECT * FROM dbo.Users ORDER BY status desc";    
        
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            
-            ResultSet rs = preparedStatement.executeQuery();
-            
+            preparedStatement = connection.prepareStatement(sql); 
+            rs = preparedStatement.executeQuery();
             while(rs.next()){
                 User user = new User();
                 user.setUser_id(rs.getInt("user_id"));
                 user.setName(rs.getString("name"));
                 user.setPhone(rs.getString("phone"));
-                user.setLeve(rs.getInt("leve"));
-                user.setFlag(rs.getInt("flag"));
+                user.setLeve(rs.getInt("level"));
+                user.setFlag(rs.getInt("status"));
                 user.setUsername(rs.getString("username"));
                 users.add(user);
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (preparedStatement != null) {
+                rs.close();
+            }
+            if (connection != null) {
+                rs.close();
+            }
         }
         return users;
     }
     
     public void addUser(User user){
        Connection connection = JDBCConnection.getJDBCConnection();
-       String sql = "INSERT INTO dbo.Users(name, phone, leve, username, password, flag) VALUES (?,?,?,?,?,?)";
+       String sql = "INSERT INTO dbo.Users(name, phone, level, username, password, status) VALUES (?,?,?,?,?,?)";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, user.getName());
@@ -134,8 +154,8 @@ public class UserDao {
                 user.setUser_id(rs.getInt("user_id"));
                 user.setName(rs.getString("name"));
                 user.setPhone(rs.getString("phone"));
-                user.setLeve(rs.getInt("leve"));
-                user.setFlag(rs.getInt("flag"));
+                user.setLeve(rs.getInt("level"));
+                user.setFlag(rs.getInt("status"));
                 user.setUsername(rs.getString("username"));
                 users.add(user);
             }
@@ -167,8 +187,8 @@ public class UserDao {
                 user.setUser_id(rs.getInt("user_id"));
                 user.setName(rs.getString("name"));
                 user.setPhone(rs.getString("phone"));
-                user.setLeve(rs.getInt("leve"));
-                user.setFlag(rs.getInt("flag"));
+                user.setLeve(rs.getInt("level"));
+                user.setFlag(rs.getInt("status"));
                 user.setUsername(rs.getString("username"));
                 users.add(user);
             }
@@ -195,12 +215,11 @@ public class UserDao {
     public void blockUser(int user_id){
         Connection connection = JDBCConnection.getJDBCConnection();
         
-        String sql = "UPDATE dbo.Users SET flag=0 WHERE user_id=?";
+        String sql = "UPDATE dbo.Users SET status=0 WHERE user_id=?";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, user_id);
-            ResultSet rs = preparedStatement.executeQuery();
-            
+            int result = preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -209,11 +228,11 @@ public class UserDao {
     public void unlockUser(int user_id){
         Connection connection = JDBCConnection.getJDBCConnection();
         
-        String sql = "UPDATE dbo.Users SET flag=1 WHERE user_id=?";
+        String sql = "UPDATE dbo.Users SET status=1 WHERE user_id=?";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, user_id);
-            ResultSet rs = preparedStatement.executeQuery();
+            preparedStatement.execute();
             
         } catch (SQLException ex) {
             Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
@@ -234,11 +253,11 @@ public class UserDao {
                 User user = new User();
                 user.setUser_id(rs.getInt("user_id"));
                 user.setName(rs.getString("name"));
-                user.setLeve(rs.getInt("leve"));
+                user.setLeve(rs.getInt("level"));
                 user.setPhone(rs.getString("phone"));
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
-                user.setFlag(rs.getInt("flag"));
+                user.setFlag(rs.getInt("status"));
                 return user;
             }
         } catch (SQLException ex) {
@@ -271,7 +290,7 @@ public class UserDao {
         JTable table = new JTable();
         Connection connection = JDBCConnection.getJDBCConnection();
         
-        String sql = "SELECT leve, COUNT(leve) FROM dbo.Users GROUP BY leve";    
+        String sql = "SELECT level, COUNT(level) FROM dbo.Users GROUP BY level";    
        
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);

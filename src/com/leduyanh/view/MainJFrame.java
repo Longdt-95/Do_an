@@ -4,13 +4,14 @@ package com.leduyanh.view;
 import com.leduyanh.bean.DanhMucBean;
 import com.leduyanh.controller.ChuyenManHinhController;
 import com.leduyanh.service.UserService;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainJFrame extends javax.swing.JFrame {
 
     UserService userService;
-    public MainJFrame(int userId) {
+    public MainJFrame(int userId) throws SQLException {
         initComponents();
         this.setLocationRelativeTo(null);
         ChuyenManHinhController controller = new ChuyenManHinhController(jpnView);
@@ -210,7 +211,6 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 3, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 255, 204));
-        jLabel2.setText("LÊ DUY ANH - 20160089");
 
         jpnTheLoai.setBackground(new java.awt.Color(76, 175, 80));
 

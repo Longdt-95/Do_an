@@ -9,6 +9,7 @@ import com.leduyanh.service.BillService;
 import com.leduyanh.service.ReaderService;
 import com.leduyanh.service.UserService;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
@@ -27,7 +28,7 @@ public class BillJPanel extends javax.swing.JPanel {
     private ReaderService readerService;
     private ExportFileExcel exportFileExcel;
     
-    public BillJPanel() {
+    public BillJPanel() throws SQLException {
         initComponents();
         defaultTableModel = new DefaultTableModel(){
             @Override
@@ -335,7 +336,11 @@ public class BillJPanel extends javax.swing.JPanel {
         List<Bill> bills = billService.getAllBill();
         
         for(Bill bill : bills){
-            defaultTableModel.addRow(new Object[]{bill.getBill_id(),readerService.getReaderById(bill.getReader_id()).getName(),userService.getUserById(bill.getUser_id()).getName(),bill.getDate(),bill.getDeposit()});
+            try {
+                defaultTableModel.addRow(new Object[]{bill.getBill_id(),readerService.getReaderById(bill.getReader_id()).getName(),userService.getUserById(bill.getUser_id()).getName(),bill.getDate(),bill.getDeposit()});
+            } catch (SQLException ex) {
+                Logger.getLogger(BillJPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_refeshButtonActionPerformed
 
@@ -380,7 +385,11 @@ public class BillJPanel extends javax.swing.JPanel {
         }
             
         for(Bill bill : bills){
-            defaultTableModel.addRow(new Object[]{bill.getBill_id(),readerService.getReaderById(bill.getReader_id()).getName(),userService.getUserById(bill.getUser_id()).getName(),bill.getDate(),bill.getDeposit()});
+            try {
+                defaultTableModel.addRow(new Object[]{bill.getBill_id(),readerService.getReaderById(bill.getReader_id()).getName(),userService.getUserById(bill.getUser_id()).getName(),bill.getDate(),bill.getDeposit()});
+            } catch (SQLException ex) {
+                Logger.getLogger(BillJPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_searchButtonActionPerformed
 
