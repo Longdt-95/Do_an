@@ -351,7 +351,11 @@ public class BillJPanel extends javax.swing.JPanel {
         }
         else{
             int billId = Integer.valueOf(String.valueOf(billTable.getValueAt(row, 0)));
-            new ShowBillDetailJFrame(billId).setVisible(true);
+            try {
+                new ShowBillDetailJFrame(billId).setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(BillJPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_showBillDetailButtonActionPerformed
 

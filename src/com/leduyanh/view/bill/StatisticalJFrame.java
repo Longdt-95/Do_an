@@ -1,18 +1,17 @@
-package com.leduyanh.view.reader;
+package com.leduyanh.view.bill;
 
-import com.leduyanh.view.book.*;
+import com.leduyanh.controller.ExportFileBill;
 import com.leduyanh.controller.ExportFileBookStatis;
 import com.leduyanh.controller.ExportFileExcel;
-import com.leduyanh.controller.ExportFileReader;
+import com.leduyanh.controller.XuLyNgayThang;
 import com.leduyanh.model.Category;
+import com.leduyanh.service.BillService;
 import com.leduyanh.service.CategoryService;
-import com.leduyanh.service.ReaderService;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,13 +20,12 @@ public class StatisticalJFrame extends javax.swing.JFrame {
     DefaultTableModel defaultTableModel;
     CategoryService categoryService;
     ExportFileExcel exportFileExel;
-    ReaderService readerService;
+    BillService billService;
 
     public StatisticalJFrame() {
         initComponents();
         this.setLocationRelativeTo(null);
-        categoryService = new CategoryService();
-        readerService = new ReaderService();
+        billService = new BillService();
 
         defaultTableModel = new DefaultTableModel() {
             @Override
@@ -35,18 +33,22 @@ public class StatisticalJFrame extends javax.swing.JFrame {
                 return false; // Không cho phép người dùng sửa dữ liệu
             }
         };
+
         statiJTable.setModel(defaultTableModel);
         defaultTableModel.addColumn("STT");
-        defaultTableModel.addColumn("Họ Và Tên");
-        defaultTableModel.addColumn("Số Lượng");
+        defaultTableModel.addColumn("Ngày");
+        defaultTableModel.addColumn("Số Phiếu");
+        defaultTableModel.addColumn("Tổng số sách cho mượn");
 
         JTable table = new JTable();
         String[][] arrStatis = new String[table.getRowCount()][table.getColumnCount()];
-        table = readerService.StatisReaderByName();
+        table = billService.StatisUserByDate();
 
         for (int row = 0; row < table.getRowCount(); row++) {
-            defaultTableModel.addRow(new Object[]{row+1, table.getValueAt(row, 0),table.getValueAt(row,1)});
+            String date = String.valueOf(table.getValueAt(row, 0));
+            defaultTableModel.addRow(new Object[]{row + 1, table.getValueAt(row, 0), table.getValueAt(row, 1), billService.getCountBookByDate(date)});
         }
+        typeStatis.setText("Theo Ngày");
     }
 
     @SuppressWarnings("unchecked")
@@ -54,11 +56,11 @@ public class StatisticalJFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        categoryButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        authorButton = new javax.swing.JButton();
-        bookButton = new javax.swing.JButton();
+        byDateButton = new javax.swing.JButton();
+        byyearButton = new javax.swing.JButton();
+        bymonthButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         statiJTable = new javax.swing.JTable();
@@ -67,16 +69,6 @@ public class StatisticalJFrame extends javax.swing.JFrame {
         typeStatis = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        categoryButton.setBackground(new java.awt.Color(0, 153, 0));
-        categoryButton.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        categoryButton.setForeground(new java.awt.Color(255, 255, 255));
-        categoryButton.setText("Theo Địa Chỉ");
-        categoryButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                categoryButtonActionPerformed(evt);
-            }
-        });
 
         backButton.setBackground(new java.awt.Color(153, 51, 0));
         backButton.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
@@ -92,23 +84,33 @@ public class StatisticalJFrame extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(153, 51, 255));
         jLabel8.setText("Lê Duy Anh - 20160089");
 
-        authorButton.setBackground(new java.awt.Color(0, 153, 0));
-        authorButton.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        authorButton.setForeground(new java.awt.Color(255, 255, 255));
-        authorButton.setText("Theo Tên");
-        authorButton.addActionListener(new java.awt.event.ActionListener() {
+        byDateButton.setBackground(new java.awt.Color(0, 153, 0));
+        byDateButton.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        byDateButton.setForeground(new java.awt.Color(255, 255, 255));
+        byDateButton.setText("Theo Ngày");
+        byDateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                authorButtonActionPerformed(evt);
+                byDateButtonActionPerformed(evt);
             }
         });
 
-        bookButton.setBackground(new java.awt.Color(0, 153, 0));
-        bookButton.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        bookButton.setForeground(new java.awt.Color(255, 255, 255));
-        bookButton.setText("Theo Sách");
-        bookButton.addActionListener(new java.awt.event.ActionListener() {
+        byyearButton.setBackground(new java.awt.Color(0, 153, 0));
+        byyearButton.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        byyearButton.setForeground(new java.awt.Color(255, 255, 255));
+        byyearButton.setText("Theo Năm");
+        byyearButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bookButtonActionPerformed(evt);
+                byyearButtonActionPerformed(evt);
+            }
+        });
+
+        bymonthButton.setBackground(new java.awt.Color(0, 153, 0));
+        bymonthButton.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        bymonthButton.setForeground(new java.awt.Color(255, 255, 255));
+        bymonthButton.setText("Theo Tháng");
+        bymonthButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bymonthButtonActionPerformed(evt);
             }
         });
 
@@ -119,13 +121,13 @@ public class StatisticalJFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(bookButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(authorButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(categoryButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(30, 30, 30)
+                .addComponent(byDateButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addComponent(bymonthButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(byyearButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(backButton)
                 .addContainerGap())
         );
@@ -134,11 +136,11 @@ public class StatisticalJFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(categoryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
-                    .addComponent(authorButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bookButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(byDateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(byyearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bymonthButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -167,8 +169,8 @@ public class StatisticalJFrame extends javax.swing.JFrame {
 
         filenameTextField.setText("Tên File");
 
-        typeStatis.setFont(new java.awt.Font("Tahoma", 2, 13)); // NOI18N
-        typeStatis.setText("Theo Tên");
+        typeStatis.setFont(new java.awt.Font("Tahoma", 2, 14)); // NOI18N
+        typeStatis.setText("jLabel1");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -177,9 +179,9 @@ public class StatisticalJFrame extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 744, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(typeStatis, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(typeStatis, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(filenameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -229,7 +231,7 @@ public class StatisticalJFrame extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
-    private void categoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryButtonActionPerformed
+    private void byyearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_byyearButtonActionPerformed
         defaultTableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -238,62 +240,102 @@ public class StatisticalJFrame extends javax.swing.JFrame {
         };
         statiJTable.setModel(defaultTableModel);
         defaultTableModel.addColumn("STT");
-        defaultTableModel.addColumn("Địa chỉ");
-        defaultTableModel.addColumn("Số Lượng");
+        defaultTableModel.addColumn("Tháng");
+        defaultTableModel.addColumn("Số Phiếu");
+        defaultTableModel.addColumn("Tổng số sách cho mượn");
+
+        XuLyNgayThang xuLy = new XuLyNgayThang();
 
         JTable table = new JTable();
-        String[][] arrStatis = new String[table.getRowCount()][table.getColumnCount()];
-        table = readerService.StatisReaderByAddress();
+
+        table = billService.StatisUserByDate();
+
+        String[][] arrStatis = new String[table.getRowCount()][3];
 
         for (int row = 0; row < table.getRowCount(); row++) {
-            defaultTableModel.addRow(new Object[]{row+1, table.getValueAt(row, 0),table.getValueAt(row,1)});
+            arrStatis[row][0] = xuLy.takeYear(String.valueOf(table.getValueAt(row, 0)));
+            arrStatis[row][1] = String.valueOf(table.getValueAt(row, 1));
+            arrStatis[row][2] = String.valueOf(billService.getCountBookByDate(String.valueOf(table.getValueAt(row, 0))));
         }
-        typeStatis.setText("Theo Địa Chỉ");
-    }//GEN-LAST:event_categoryButtonActionPerformed
 
-    private void authorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_authorButtonActionPerformed
+        int index = 0;
+        String[][] arrStatis2 = new String[table.getRowCount()][2];
+        arrStatis2[0][0] = arrStatis[0][0];
+        arrStatis2[0][1] = arrStatis[0][1];
+
+        int count = 0;
+        int count2 = 0;
+        for (int i = 0; i < table.getRowCount(); i++) {
+            for (int j = i + 1; j < table.getRowCount(); j++) {
+                if (arrStatis[i][0].equals(arrStatis[j][0])) {
+                    //System.out.println("ok");
+                    count = Integer.valueOf(arrStatis[i][1]);
+                    count += Integer.valueOf(arrStatis[j][1]);
+                    arrStatis[i][1] = String.valueOf(count);
+
+                    count2 = Integer.valueOf(arrStatis[i][2]);
+                    count2 += Integer.valueOf(arrStatis[j][2]);
+                    arrStatis[i][2] = String.valueOf(count2);
+
+                    arrStatis[j][0] = "null";
+                }
+            }
+
+        }
+        for (int row = 0; row < table.getRowCount(); row++) {
+            if (!arrStatis[row][0].equals("null")) {
+                defaultTableModel.addRow(new Object[]{row + 1, arrStatis[row][0], arrStatis[row][1], arrStatis[row][2]});
+            }
+
+        }
+
+        typeStatis.setText("Theo Năm");
+    }//GEN-LAST:event_byyearButtonActionPerformed
+
+    private void byDateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_byDateButtonActionPerformed
         defaultTableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false; // Không cho phép người dùng sửa dữ liệu
             }
         };
+
         statiJTable.setModel(defaultTableModel);
         defaultTableModel.addColumn("STT");
-        defaultTableModel.addColumn("Họ Và Tên");
-        defaultTableModel.addColumn("Số Lượng");
+        defaultTableModel.addColumn("Ngày");
+        defaultTableModel.addColumn("Số Phiếu");
+        defaultTableModel.addColumn("Tổng số sách cho mượn");
 
         JTable table = new JTable();
         String[][] arrStatis = new String[table.getRowCount()][table.getColumnCount()];
-        table = readerService.StatisReaderByName();
+        table = billService.StatisUserByDate();
 
         for (int row = 0; row < table.getRowCount(); row++) {
-            defaultTableModel.addRow(new Object[]{row+1, table.getValueAt(row, 0),table.getValueAt(row,1)});
+            String date = String.valueOf(table.getValueAt(row, 0));
+            defaultTableModel.addRow(new Object[]{row + 1, table.getValueAt(row, 0), table.getValueAt(row, 1), billService.getCountBookByDate(date)});
         }
-        typeStatis.setText("Theo Tên");
-    }//GEN-LAST:event_authorButtonActionPerformed
+        typeStatis.setText("Theo Ngày");
+    }//GEN-LAST:event_byDateButtonActionPerformed
 
     private void exportFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportFileButtonActionPerformed
-        ExportFileReader export = new ExportFileReader();
+        ExportFileBill export = new ExportFileBill();
         StringBuffer path = new StringBuffer();
         path.append("C:\\Users\\Admin\\Desktop\\");
         path.append(filenameTextField.getText());
         path.append(".docx");
         String path2 = path.toString();
-        if(typeStatis.getText().equals("Theo Tên")){
-            export.ExportFileWordByName(statiJTable,path2);
+        if (typeStatis.getText().equals("Theo Ngày")) {
+            export.ExportFileBillByDate(statiJTable, path2);
+        } else if (typeStatis.getText().equals("Theo Tháng")) {
+            export.ExportFileBillByMonth(statiJTable, path2);
+        } else {
+            export.ExportFileBillByYear(statiJTable, path2);
         }
-        else if(typeStatis.getText().equals("Theo Địa Chỉ")){
-            export.ExportFileWordByAddress(statiJTable,path2);
-        }
-        else{
-            export.ExportFileWordByBook(statiJTable,path2);
-        }
-        
+
         JOptionPane.showMessageDialog(null, "Lưu file thành công!");
     }//GEN-LAST:event_exportFileButtonActionPerformed
 
-    private void bookButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookButtonActionPerformed
+    private void bymonthButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bymonthButtonActionPerformed
         defaultTableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -302,27 +344,62 @@ public class StatisticalJFrame extends javax.swing.JFrame {
         };
         statiJTable.setModel(defaultTableModel);
         defaultTableModel.addColumn("STT");
-        defaultTableModel.addColumn("Mã Độc Giả");
-        defaultTableModel.addColumn("Họ Và Tên");
-        defaultTableModel.addColumn("Số Lượng Sách Mượn");
+        defaultTableModel.addColumn("Tháng");
+        defaultTableModel.addColumn("Số Phiếu");
+        defaultTableModel.addColumn("Tổng số sách cho mượn");
+
+        XuLyNgayThang xuLy = new XuLyNgayThang();
 
         JTable table = new JTable();
-        String[][] arrStatis = new String[table.getRowCount()][table.getColumnCount()];
-        table = readerService.StatisReaderByBook();
+
+        table = billService.StatisUserByDate();
+
+        String[][] arrStatis = new String[table.getRowCount()][3];
 
         for (int row = 0; row < table.getRowCount(); row++) {
-            int readerId = Integer.valueOf(String.valueOf(table.getValueAt(row, 0)));
-            defaultTableModel.addRow(new Object[]{row+1, table.getValueAt(row, 0),readerService.getReaderById(readerId).getName(),table.getValueAt(row,1)});
+            arrStatis[row][0] = xuLy.takeMonth(String.valueOf(table.getValueAt(row, 0)));
+            arrStatis[row][1] = String.valueOf(table.getValueAt(row, 1));
+            arrStatis[row][2] = String.valueOf(billService.getCountBookByDate(String.valueOf(table.getValueAt(row, 0))));
         }
-        typeStatis.setText("Số Lượng Sách Mượn");
-    }//GEN-LAST:event_bookButtonActionPerformed
 
+        int index = 0;
+        String[][] arrStatis2 = new String[table.getRowCount()][2];
+        arrStatis2[0][0] = arrStatis[0][0];
+        arrStatis2[0][1] = arrStatis[0][1];
+
+        int count = 0;
+        int count2 = 0;
+        for (int i = 0; i < table.getRowCount(); i++) {
+            for (int j = i + 1; j < table.getRowCount(); j++) {
+                if (arrStatis[i][0].equals(arrStatis[j][0])) {
+                    //System.out.println("ok");
+                    count = Integer.valueOf(arrStatis[i][1]);
+                    count += Integer.valueOf(arrStatis[j][1]);
+                    arrStatis[i][1] = String.valueOf(count);
+
+                    count2 = Integer.valueOf(arrStatis[i][2]);
+                    count2 += Integer.valueOf(arrStatis[j][2]);
+                    arrStatis[i][2] = String.valueOf(count2);
+
+                    arrStatis[j][0] = "null";
+                }
+            }
+
+        }
+        for (int row = 0; row < table.getRowCount(); row++) {
+            if (!arrStatis[row][0].equals("null")) {
+                defaultTableModel.addRow(new Object[]{row + 1, arrStatis[row][0], arrStatis[row][1], arrStatis[row][2]});
+            }
+
+        }
+        typeStatis.setText("Theo Tháng");
+    }//GEN-LAST:event_bymonthButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton authorButton;
     private javax.swing.JButton backButton;
-    private javax.swing.JButton bookButton;
-    private javax.swing.JButton categoryButton;
+    private javax.swing.JButton byDateButton;
+    private javax.swing.JButton bymonthButton;
+    private javax.swing.JButton byyearButton;
     private javax.swing.JButton exportFileButton;
     private javax.swing.JTextField filenameTextField;
     private javax.swing.JLabel jLabel8;

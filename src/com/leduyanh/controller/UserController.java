@@ -11,6 +11,9 @@ import com.leduyanh.view.MainJFrame;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -57,8 +60,12 @@ public class UserController {
                         if (user.getFlag() == 0) {
                             jlbMsg.setText("Tài khoản đang bị tạm khóa!");
                         } else {          
-                            dialog.dispose();
-                            new MainJFrame(user.getUser_id()).setVisible(true);
+                            try {
+                                dialog.dispose();
+                                new MainJFrame(user.getUser_id()).setVisible(true);
+                            } catch (SQLException ex) {
+                                Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
                 }
